@@ -5,12 +5,16 @@ import axios from "axios";
 function QueryExample() {
     const { isLoading, status, error, data } = useQuery({
         queryKey: ["example"],
-        queryFn: () => axios.get(`https://localhost:5000`).then(res => { console.log("Query requested", res.data); return res.data })
+        queryFn: () => axios.get(`https://localhost:5000`).then(res => { return res.data }),
     });
-    if (isLoading) return <div className='bg-red-300'>Loading...</div>
-    if (status === "error") return <div className='bg-red-300'>An Error occured : {error instanceof Error ? error.message : ""}</div>
+    if (isLoading) return <div className='bg-green-800'>Loading...</div>
+    if (status === "error") return <div className='bg-red-800'>An Error occured : {error instanceof Error ? error.message : ""}</div>
     return (
-        <div className='bg-red-300'>Data loaded via Tanstack React Query {JSON.stringify(data)}</div>
+        <>
+            <span className='text-red-400 text-base text-center mb-1'>Query Client's defaults are overriden to have infinity stale time so that it fetches only once unless you specify otherwise.</span>
+            <span className='text-red-400 text-base text-center mb-1'>Retry is set <code className='bg-gray-800 p-1 px-2 rounded-md'>false</code> so that you dont try refetching multiple times unless you specify otherwise.</span>
+            <span className='text-green-400 font-semibold text-sm text-center'>Data loaded via Tanstack React Query {JSON.stringify(data)} </span>
+        </>
     )
 }
 

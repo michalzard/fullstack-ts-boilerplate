@@ -9,11 +9,27 @@ const app = express2(express);
 const http2Options = { key: fs.readFileSync("./certs/key.pem"), cert: fs.readFileSync("./certs/cert.pem"), allowHTTP1: true };
 const server = http2.createSecureServer(http2Options, app);
 import cors from "cors";
-console.log(process.env.CLIENT_URL);
-app.use(cors({ origin: true }));
+import pg from "pg";
 
-app.get("/", (req, res) => {
-    res.status(200).send({ message: "SSL enabled" });
+const { Pool } = pg;
+export const db = new Pool({
+    host: process.env.DB_HOST,
+    password: process.env.DB_PASSWORD,
+    port: +process.env.DB_PORT! || 5432,//5432 is default postgres
+    user: process.env.DB_USER,
+    database: process.env.DB_NAME,
+    
 })
+db.connect().then(() => { console.log("PG database connected") }).catch(console.error);
+
+
+app.use(cors({ origin: true })); //specify origin if you want to allow only certain domain to communicate with this server
+app.get("/", (req, res) => {
+    res.status(200).send({ message: "Example Api" });
+})
+
+// Routes
+import counterRoute from "./routes/counter";
+app.use("/counter", counterRoute);
 
 server.listen(process.env.PORT, () => { console.log(`Web server is running on ${process.env.PORT} with SSL enabled`) })
