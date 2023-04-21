@@ -1,4 +1,4 @@
-# Fullstack Typescript boilerplate with everything you could need to start that next project you had in mind for a long time.
+# Fullstack ts boilerplate to start that next project you had in mind for a long time.
 
 ## Tools
 
@@ -15,6 +15,25 @@
 
 ## Features
 
+- React for performant applications
+- Tailwindcss for fast and powerfull css out of the box
+- Tanstack React Query for ease of querying and caching results
+- Postgresql for powerfull and fast sql based database
+- http2 express server for multiplexing and faster response time
+- vite for performant dev server aswell as bundler
+- pnpm for performant packag managing
+
+## Examples inside project
+
+- persistent counter that gets incremented on each page visit
+- data loading and caching via tanstack query
+- basic auth workflow `Register,Login,Logout,Session`
+
 ## How To Start
+
+Project is separated into 2 main folders `website` and `server`.
+to start each development environment simply change directory into these folders
+like so : `cd website` or `cd server` and to run dev server you can write `pnpm run dev` on both of them.
+Website runs on `Vite` and server runs on `Express` that is bridged to `http2` with fallback option to `http1`.<br/><br/><br/>
 
 <img src="./website/public/images/boilerplate.png"/>
