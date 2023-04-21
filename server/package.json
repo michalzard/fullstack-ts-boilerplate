@@ -2,7 +2,6 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "certgen": "tsx certgen.ts",
@@ -22,6 +21,8 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
+    "@paralleldrive/cuid2": "^2.2.0",
+    "argon2": "^0.30.3",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",

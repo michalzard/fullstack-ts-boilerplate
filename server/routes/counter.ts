@@ -1,12 +1,13 @@
 import express from "express";
 const router = express.Router();
 import { db } from "../index";
-import { increaseCounter, initializeCounter } from "../queries/counterQuery";
+import { increaseCounter, initializeCounter } from "../sql/counterQuery";
 
 router.get("/increment", async (req, res) => {
     try {
         // check if table exists if it doesnt create it
         // if column exists update + 1 if not insert it
+        // FIXME: this is probably bad check if table exists every query
         db.query(initializeCounter).then(async data => {
             // grab third element since its the update command which has freshest data
             db.query(increaseCounter).then(data => {

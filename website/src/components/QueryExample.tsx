@@ -5,7 +5,17 @@ import axios from "axios";
 function QueryExample() {
     const { isLoading, status, error, data } = useQuery({
         queryKey: ["example"],
-        queryFn: () => axios.get(`https://localhost:5000`).then(res => { return res.data }),
+        queryFn: () => axios.get(`${import.meta.env.VITE_API_URL}`).then(res => { return res.data }),
+    });
+    useQuery({
+        queryKey: ["session"],
+        queryFn: () => axios.get(`${import.meta.env.VITE_API_URL}/auth/session`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")} `
+            }
+        }).then(res => { return res.data }),
+        staleTime: Infinity,
+        refetchOnWindowFocus: false,
     });
     if (isLoading) return <div className='bg-green-800'>Loading...</div>
     if (status === "error") return <div className='bg-red-800'>An Error occured : {error instanceof Error ? error.message : ""}</div>
