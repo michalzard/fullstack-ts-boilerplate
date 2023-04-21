@@ -6,11 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
 const index_1 = require("../index");
-const counterQuery_1 = require("../queries/counterQuery");
+const counterQuery_1 = require("../sql/counterQuery");
 router.get("/increment", async (req, res) => {
     try {
         // check if table exists if it doesnt create it
         // if column exists update + 1 if not insert it
+        // FIXME: this is probably bad check if table exists every query
         index_1.db.query(counterQuery_1.initializeCounter).then(async (data) => {
             // grab third element since its the update command which has freshest data
             index_1.db.query(counterQuery_1.increaseCounter).then(data => {
