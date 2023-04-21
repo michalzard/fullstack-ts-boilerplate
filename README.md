@@ -15,6 +15,7 @@
 
 ## Features
 
+- Scaffolding project to get you to your destination faster.
 - React for performant applications
 - Tailwindcss for fast and powerfull css out of the box
 - Tanstack React Query for ease of querying and caching results
