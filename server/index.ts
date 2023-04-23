@@ -16,7 +16,13 @@ export const db = new Pool({
     database: process.env.DB_NAME,
 
 })
-db.connect().then(() => { console.log("PG database connected") }).catch(console.error);
+import { createTables } from "./sql/tables";
+
+db.connect().then(async () => {
+    console.log("Database connected");
+    db.query(createTables).then(() => console.log("Tables were created")).catch(console.error);
+
+}).catch(console.error);
 
 
 let app = null;

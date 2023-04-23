@@ -1,22 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteSessionByToken = exports.findSessionByPK = exports.findSessionByToken = exports.saveToSession = exports.findUserByPrimaryKey = exports.findUserByUsername = exports.registerUser = exports.checkExistingUser = exports.createSessionTable = exports.createUserTable = void 0;
-exports.createUserTable = `
-CREATE TABLE IF NOT EXISTS "user"(
-    pk SERIAL PRIMARY KEY, 
-    username VARCHAR(100) NOT NULL UNIQUE,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    password TEXT NOT NULL,
-	id CHAR(24) NOT NULL UNIQUE
-);
-`;
-exports.createSessionTable = `
-CREATE TABLE IF NOT EXISTS "session"(
-    token CHAR(24) NOT NULL,
-    user_fk INT REFERENCES "user"(pk),
-	expiresIn TIMESTAMP
-);
-`;
+exports.deleteSessionByToken = exports.findSessionByPrimaryKey = exports.findSessionByToken = exports.saveToSession = exports.findUserByPrimaryKey = exports.findUserByUsername = exports.registerUser = exports.checkExistingUser = void 0;
 // registration
 exports.checkExistingUser = `
 SELECT * FROM "user" WHERE username = $1 OR email = $2; 
@@ -33,13 +17,13 @@ SELECT * from "user" WHERE pk = $1;
 `;
 //session
 exports.saveToSession = `
-INSERT INTO "session"(token,user_fk,expiresIn) VALUES($1,$2,$3);
+INSERT INTO "session"(token,user_pk) VALUES($1,$2);
 `;
 exports.findSessionByToken = `
 SELECT * FROM "session" WHERE token = $1;
 `;
-exports.findSessionByPK = `
-SELECT * FROM "session" WHERE user_fk = $1;
+exports.findSessionByPrimaryKey = `
+SELECT * FROM "session" WHERE user_pk = $1;
 `;
 exports.deleteSessionByToken = `
 DELETE FROM "session" WHERE token = $1;
