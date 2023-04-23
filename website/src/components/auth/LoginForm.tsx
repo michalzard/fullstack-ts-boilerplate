@@ -1,35 +1,21 @@
 import { useFormik } from 'formik';
-import React from 'react'
 import { useNavigate } from 'react-router-dom';
-import { queryClient } from '../../main';
-import axios from 'axios';
+import { useUserStore } from '../../store/userStore';
 
 function LoginForm() {
     const navigate = useNavigate();
-    const isLoggedIn = localStorage.getItem("token");
+    const user = useUserStore();
+    // const isLoggedIn = localStorage.getItem("token");
     const { values, handleBlur, handleChange, handleSubmit, isSubmitting } = useFormik({
         initialValues: {
             username: "",
             password: "",
         },
         onSubmit: (values, form) => {
-            axios.post(`${import.meta.env.VITE_API_URL}/auth/login`, { ...values }).then(res => {
-                console.log(res.data);
-                const token = res.headers?.authorization;
-                const { user } = res.data;
-                if (token) {
-                    const tokenValue = token.split("Bearer ")[1];
-                    localStorage.setItem("token", tokenValue);
-                    queryClient.setQueryData(["user"], user);
-                    navigate("/");
-                    form.resetForm();
-                }
-            }).catch(err => {
-                console.error(err.response);
-            })
+            user.login(values, navigate);
+            form.resetForm();
         },
     })
-    if (isLoggedIn) navigate("/");
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-2 items-center justify-center p-4 text-white">
             <input id="username" type="text" placeholder="Username" value={values.username} onChange={handleChange} onBlur={handleBlur} className='bg-gray-700 rounded-md p-2' />

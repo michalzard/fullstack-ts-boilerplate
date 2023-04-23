@@ -18,7 +18,7 @@
 - Scaffolding project to get you to your destination faster.
 - React for performant applications
 - Tailwindcss for fast and powerfull css out of the box
-- Tanstack React Query for ease of querying and caching results
+- Zustand(Redux but without the fluff) for simple yet effective state management
 - Postgresql for powerfull and fast sql based database
 - http2 express server for multiplexing and faster response time
 - vite for performant dev server aswell as bundler

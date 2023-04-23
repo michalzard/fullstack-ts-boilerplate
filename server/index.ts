@@ -1,10 +1,8 @@
 import fs from "fs";
 import express from "express";
+import http from "http";
 import http2 from "http2";
 import express2 from "http2-express-bridge";
-const app = express2(express);
-const http2Options = { key: fs.readFileSync("./certs/key.pem"), cert: fs.readFileSync("./certs/cert.pem"), allowHTTP1: true };
-const server = http2.createSecureServer(http2Options, app);
 import dotenv from "dotenv";
 dotenv.config();
 import cors from "cors";
@@ -20,16 +18,32 @@ export const db = new Pool({
 })
 db.connect().then(() => { console.log("PG database connected") }).catch(console.error);
 
-app.use(cors({ origin: true })); //specify origin if you want to allow only certain domain to communicate with this server
+
+let app = null;
+const http2Options = { key: fs.readFileSync("./certs/key.pem"), cert: fs.readFileSync("./certs/cert.pem"), allowHTTP1: true };
+let server = null;
+
+if (process.env.NODE_ENV === "production") {
+    // HTTP/2 in production
+    app = express2(express);
+    server = http2.createSecureServer(http2Options, app);
+} else {
+    // HTTP/1 for local development
+    app = express();
+    server = http.createServer(app);
+}
+
+
+app.use(cors({ credentials: true, origin: true })); //specify origin if you want to allow only certain domain to communicate with this server
 app.use(express.json());
 app.get("/", (req, res) => {
     res.status(200).send({ message: "Example Api" });
 })
 
 // Routes
-import counterRoute from "./routes/counter";
-import authRoute from "./routes/auth";
+import counterRoute from "./routes/counterRoute";
+import authRoute from "./routes/authRoute";
 app.use("/counter", counterRoute);
 app.use("/auth", authRoute);
 
-server.listen(process.env.PORT, () => { console.log(`Web server is running on ${process.env.PORT} with SSL enabled`) })
+server.listen(process.env.PORT, () => { console.log(`Web ${process.env.NODE_ENV === "production" ? "h2" : "h1"} server is running on ${process.env.PORT}`) })

@@ -10,8 +10,7 @@ CREATE TABLE IF NOT EXISTS "user"(
 export const createSessionTable: string = `
 CREATE TABLE IF NOT EXISTS "session"(
     token CHAR(24) NOT NULL,
-    user_fk INT REFERENCES "user"(pk),
-	expiresIn TIMESTAMP
+    user_pk INT REFERENCES "user"(pk),
 );
 `;
 
@@ -31,13 +30,14 @@ SELECT * from "user" WHERE pk = $1;
 `;
 //session
 export const saveToSession: string = `
-INSERT INTO "session"(token,user_fk,expiresIn) VALUES($1,$2,$3);
+INSERT INTO "session"(token,user_pk) VALUES($1,$2);
 `;
 export const findSessionByToken: string = `
 SELECT * FROM "session" WHERE token = $1;
 `;
-export const findSessionByPK: string = `
-SELECT * FROM "session" WHERE user_fk = $1;
+
+export const findSessionByPrimaryKey: string = `
+SELECT * FROM "session" WHERE user_pk = $1;
 `;
 
 export const deleteSessionByToken: string = `
