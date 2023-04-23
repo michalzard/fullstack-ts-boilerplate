@@ -36,5 +36,3 @@ Project is separated into 2 main folders `website` and `server`.
 to start each development environment simply change directory into these folders
 like so : `cd website` or `cd server` and to run dev server you can write `pnpm run dev` on both of them.
 Website runs on `Vite` and server runs on `Express` that is bridged to `http2` with fallback option to `http1`.<br/><br/><br/>
-
-<img src="./website/public/images/boilerplate.png"/>
